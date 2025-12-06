@@ -18,6 +18,39 @@ const getAllUser = async (req: Request, res: Response) =>{
     }
 }
 
+const updateUserData = async (req: Request, res: Response) => {
+    let idToUpdate: string;
+    const user = (req as any).user;
+    if(user.role === "admin") {
+        idToUpdate = req.params.id as string;
+    } else {
+        idToUpdate = user.id;
+    }
+    try {
+        const result = await userServices.updateUserData(req.body, idToUpdate)
+
+        if(result.rows.length === 0) {
+            res.status(404).json({
+                success: false,
+                message: "user not found"
+            })
+        } else {
+            res.status(201).json({
+                success: true,
+                message: "User updated successfully",
+                data: result.rows[0]
+            })
+        }
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        })
+    }
+}
+
 export const usersControllers ={
     getAllUser,
+    updateUserData,
+
 }

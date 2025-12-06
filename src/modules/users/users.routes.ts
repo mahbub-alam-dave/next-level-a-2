@@ -1,10 +1,13 @@
 import express from "express"
 import { usersControllers } from "./users.controllers"
+import adminAuth from "../../middleware/adminAuth";
+import isOwnerOrAdmin from "../../middleware/isOwnerOrAdmin";
 import auth from "../../middleware/auth";
 
 const router = express.Router()
 
 
-router.get("/", auth("admin"), usersControllers.getAllUser)
+router.get("/", adminAuth("admin"), usersControllers.getAllUser)
+router.put("/:id", auth(), isOwnerOrAdmin, usersControllers.updateUserData)
 
 export const usersRoutes = router;
