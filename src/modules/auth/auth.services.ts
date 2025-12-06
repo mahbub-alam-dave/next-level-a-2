@@ -15,13 +15,14 @@ const signupUser = async (payload: Record<string, unknown>) =>{
 }
 
 const signinUser =async(email: string, password: string) => {
-    const result = await pool.query(`SELECT * FROM Users WHERE email=$1, password=$2`, [email, password])
+    const result = await pool.query(`SELECT * FROM Users WHERE email=$1`, [email])
 
     if(result.rows.length === 0) {
         return null;
     }
 
     const user = result.rows[0]
+    console.log(user)
 
     const isMatched = await bcrypt.compare(password, user.password);
 
@@ -29,7 +30,8 @@ const signinUser =async(email: string, password: string) => {
         return false
     }
 
-    const secret =  config.jwtSecret;
+    // const secret =  "KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30";
+    const secret = config.jwtSecret;
     const token = jwt.sign({name: user.name, email: user.email, role: user.role, id: user.id}, secret as string, { expiresIn: "7d"})
 
     console.log(token, user)

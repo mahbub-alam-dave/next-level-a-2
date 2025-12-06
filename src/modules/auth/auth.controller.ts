@@ -21,12 +21,12 @@ const signupUser = async (req: Request, res: Response) => {
 
 const signinUser = async (req: Request, res:Response) => {
 
-    const {email, password} = req.body
+    const {email, password} = req.body;
     try {
         const result = await authServices.signinUser(email, password)
 
         res.status(201).json({
-            success: false,
+            success: true,
             message: "user signed in successfully",
             data: result
         })
