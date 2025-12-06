@@ -11,7 +11,7 @@ const initDB = async() => {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         email VARCHAR(200) UNIQUE NOT NULL,
-        password VARCHAR(100) NOT NULL,
+        password TEXT NOT NULL,
         phone VARCHAR(20) NOT NULL,
         role VARCHAR(10) NOT NULL,
         CONSTRAINT Chk_PassLength CHECK (LENGTH(password) >= 6),
