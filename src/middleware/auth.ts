@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import  jwt  from "jsonwebtoken";
 import config from "../config/config";
-import { UserPayload } from "./adminAuth";
+import { UserPayload } from "./roleAuth";
 
 const auth = (role?: "admin" | "user") => { 
     return (req: Request, res: Response, next: NextFunction) => {

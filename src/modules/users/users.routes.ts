@@ -1,6 +1,6 @@
 import express from "express"
 import { usersControllers } from "./users.controllers"
-import adminAuth from "../../middleware/adminAuth";
+import adminAuth from "../../middleware/roleAuth";
 import isOwnerOrAdmin from "../../middleware/isOwnerOrAdmin";
 import auth from "../../middleware/auth";
 

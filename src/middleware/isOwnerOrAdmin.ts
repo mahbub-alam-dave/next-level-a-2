@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { UserPayload } from "./adminAuth";
+import { UserPayload } from "./roleAuth";
 const isOwnerOrAdmin = (req: Request, res: Response, next: NextFunction) => {
     const user = (req as any).user as UserPayload;
     const targetUserId = req.params.id; 
