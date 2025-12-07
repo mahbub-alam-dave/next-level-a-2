@@ -4,6 +4,7 @@ import initDB from './config/db.js'
 import {authRoutes} from "./modules/auth/auth.routes.js"
 import {usersRoutes} from "./modules/users/users.routes.js"
 import {vehiclesRoutes} from "./modules/vehicles/vehicles.routes.js"
+import {bookingsRoutes} from "./modules/bookings/bookings.routes.js"
 
 const app = express()
 const port = config.port
@@ -18,6 +19,8 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/users", usersRoutes)
 // vehicles route
 app.use("/api/v1/vehicles", vehiclesRoutes)
+// bookings route
+app.use("/api/v1/bookings", bookingsRoutes)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello World!')
