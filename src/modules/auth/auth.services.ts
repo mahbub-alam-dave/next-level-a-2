@@ -22,7 +22,6 @@ const signinUser =async(email: string, password: string) => {
     }
 
     const user = result.rows[0]
-    console.log(user)
 
     const isMatched = await bcrypt.compare(password, user.password);
 
@@ -34,7 +33,6 @@ const signinUser =async(email: string, password: string) => {
     const secret = config.jwtSecret;
     const token = jwt.sign({name: user.name, email: user.email, role: user.role, id: user.id}, secret as string, { expiresIn: "7d"})
 
-    // console.log(token, user)
     return {token, user}
 }
 

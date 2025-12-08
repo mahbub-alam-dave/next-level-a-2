@@ -91,7 +91,7 @@ const updateVehicleDetails = async (req: Request, res: Response) => {
 const deleteVehicle = async (req: Request, res: Response) => {
     try {
         const result = await vehiclesServices.deleteVehicle(req.params.id as string)
-        if(result.rows.length === 0){
+        if(!result || result.rowCount === 0){
             res.status(404).json({
                 success: false,
                 message: "Vehicle not found"

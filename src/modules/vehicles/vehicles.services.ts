@@ -20,14 +20,19 @@ const getVehicleDetails = async (id: string) => {
 }
 
 const updateVehicleDetails = async (payload: Record<string, unknown>, id: string) => {
-    const {vehicles_name, daily_rent_price, availability_status} = payload;
+    const {vehicles_name, type, registration_number, daily_rent_price, availability_status} = payload;
 
-    const result = await pool.query(`UPDATE Vehicles SET vehicles_name=$1, daily_rent_price=$2, availability_status=$3 WHERE id=$4 RETURNING *`, [vehicles_name, daily_rent_price, availability_status, id])
+    const result = await pool.query(`UPDATE Vehicles SET vehicles_name=$1, type=$2, registration_number=$3, daily_rent_price=$4, availability_status=$5 WHERE id=$6 RETURNING *`, [vehicles_name, type, registration_number, daily_rent_price, availability_status, id])
 
     return result;
 }
 
 const deleteVehicle = async(id: string) =>{
+    const isActiveBookings = await pool.query(`SELECT * FROM Bookings where vehicle_id=$1 AND status = 'active'`,[id])
+    
+ if (isActiveBookings.rows.length > 0) {
+        throw new Error("Vehicle cannot be deleted. Active bookings exist.");
+    }
     const result = await pool.query(`DELETE FROM Vehicles WHERE id=$1`, [id])
     return result;
 }

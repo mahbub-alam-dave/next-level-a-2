@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { UserPayload } from "./roleAuth";
 const isOwnerOrAdmin = (req: Request, res: Response, next: NextFunction) => {
     const user = (req as any).user as UserPayload;
-    const targetUserId = req.params.id; 
+    const targetUserId = req.params.id as string; 
     console.log(user)
 
     if (user?.role === 'admin') {
@@ -10,9 +10,9 @@ const isOwnerOrAdmin = (req: Request, res: Response, next: NextFunction) => {
     }
 
 
-    if (user?.id == targetUserId) {
+    else if (user?.id == targetUserId) {
         return next(); 
-    }
+    } 
 
     return res.status(403).json({ 
         success: false, 

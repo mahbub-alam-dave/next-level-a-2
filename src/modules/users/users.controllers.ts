@@ -21,11 +21,14 @@ const getAllUser = async (req: Request, res: Response) =>{
 const updateUserData = async (req: Request, res: Response) => {
     let idToUpdate: string;
     const user = (req as any).user;
-    if(user.role === "admin") {
+/*     if(user.role === "admin") {
         idToUpdate = req.params.id as string;
-    } else {
+    } else if(user.id === req.params.id) {
         idToUpdate = user.id;
-    }
+    } else {
+        throw new Error("You are not permissible to update the user")
+    } */
+   idToUpdate = req.params.id as string
     try {
         const result = await userServices.updateUserData(req.body, idToUpdate)
 
@@ -52,7 +55,7 @@ const updateUserData = async (req: Request, res: Response) => {
 const deleteUser = async(req: Request, res: Response) => {
     try {
         const result = await userServices.deleteUser(req.params.id as string)
-        if(result.rows.length === 0){
+        if(result.rowCount === 0){
             res.status(404).json({
                 success: false,
                 message: "User not found"
