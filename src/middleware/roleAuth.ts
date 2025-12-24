@@ -6,10 +6,10 @@ export interface UserPayload extends JwtPayload {
     id: string; 
     name: string;
     email: string;
-    role: 'admin' | 'user';
+    role: 'admin' | 'customer';
 }
 
-const auth = (role: "admin" | "user") => {
+const auth = (role: "admin" | "customer") => {
     return (req: Request, res: Response, next: NextFunction) => {
         const authHeader =req.headers.authorization;
 

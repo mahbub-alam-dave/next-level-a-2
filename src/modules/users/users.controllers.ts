@@ -22,13 +22,13 @@ const updateUserData = async (req: Request, res: Response) => {
     let idToUpdate: string;
     const user = (req as any).user;
 /*     if(user.role === "admin") {
-        idToUpdate = req.params.id as string;
-    } else if(user.id === req.params.id) {
+        idToUpdate = req.params.userId as string;
+    } else if(user.id === req.params.userId) {
         idToUpdate = user.id;
     } else {
         throw new Error("You are not permissible to update the user")
     } */
-   idToUpdate = req.params.id as string
+   idToUpdate = req.params.userId as string
     try {
         const result = await userServices.updateUserData(req.body, idToUpdate)
 
@@ -54,7 +54,7 @@ const updateUserData = async (req: Request, res: Response) => {
 
 const deleteUser = async(req: Request, res: Response) => {
     try {
-        const result = await userServices.deleteUser(req.params.id as string)
+        const result = await userServices.deleteUser(req.params.userId as string)
         if(result.rowCount === 0){
             res.status(404).json({
                 success: false,

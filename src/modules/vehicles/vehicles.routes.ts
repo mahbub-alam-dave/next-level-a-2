@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.post("/", roleAuth("admin"), vehiclesController.addVehicles)
 router.get("/", vehiclesController.getAllVehicles)
-router.get("/:id", vehiclesController.getSingleVehicleDetails)
-router.put("/:id", roleAuth("admin"), vehiclesController.updateVehicleDetails)
-router.delete("/:id", roleAuth("admin"), vehiclesController.deleteVehicle)
+router.get("/:vehicleId", vehiclesController.getSingleVehicleDetails)
+router.put("/:vehicleId", roleAuth("admin"), vehiclesController.updateVehicleDetails)
+router.delete("/:vehicleId", roleAuth("admin"), vehiclesController.deleteVehicle)
 
 export const vehiclesRoutes = router;

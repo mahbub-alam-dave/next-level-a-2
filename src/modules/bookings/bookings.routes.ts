@@ -7,8 +7,6 @@ const router = express.Router()
 
 router.post("/", auth(), bookingsController.bookVehicles)
 router.get("/", auth(), bookingsController.getBookings)
-router.put("/cancel/:id", auth(), bookingsController.cancelBooking); 
-router.put("/return/:id", roleAuth("admin"), bookingsController.markAsReturned); 
-router.get("/auto-return", bookingsController.autoMarkBySystem); 
+router.put('/:bookingId', auth(), bookingsController.updateBookings)
 
 export const bookingsRoutes = router;

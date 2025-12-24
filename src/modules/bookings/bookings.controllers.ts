@@ -85,77 +85,33 @@ const getBookings = async(req:Request, res: Response) => {
     }
 }
 
-export const cancelBooking = async (req: Request, res: Response) => {
-    const bookingId = req.params.id;
-    const customerId = (req as any).user.id;
-
-    try {
-        const result = await bookingsService.cancelBookings(bookingId!, customerId);
-
-        return res.status(200).json({
-            success: true,
-            message: "Booking cancelled",
-            data: result
-        });
-
-    } catch (error: any) {
-        return res.status(400).json({
-            success: false,
-            message: error.message
-        });
-    }
-}
-
-const markAsReturned = async(req: Request, res: Response) => {
-    const bookingId = req.params.id;
+export const updateBookings = async (req: Request, res: Response) => {
+    const bookingId = req.params.bookingId;
     const role = (req as any).user.role;
-
-    if (role !== "admin") {
-        return res.status(403).json({
-            success: false,
-            message: "Only admin can mark as returned"
-        });
-    }
+    const customerId = (req as any).user.id;
+    const {status} = req.body;
 
     try {
-        const result = await bookingsService.markAsReturned(bookingId!);
-
-        return res.status(200).json({
-            success: true,
-            message: "Vehicle marked as returned",
-            data: result
-        });
+        const {data, message} = await bookingsService.updateBookings(bookingId as string, customerId, status, role)
+        
+        return res.status(201).json({
+                success: true,
+                message: message,
+                data: data
+            })
 
     } catch (error: any) {
-        return res.status(400).json({
+            return res.status(400).json({
             success: false,
             message: error.message
         });
     }
 }
 
-const autoMarkBySystem = async (req:Request, res: Response) => {
-        try {
-        const total = await bookingsService.autoReturnExpiredBookings();
 
-        return res.status(200).json({
-            success: true,
-            message: `Auto-return completed for ${total} bookings.`
-        });
-
-    } catch (error: any) {
-        return res.status(500).json({
-            success: false,
-            message: error.message
-        });
-    }
-
-}
 
 export const bookingsController = {
     bookVehicles,
     getBookings,
-    cancelBooking,
-    markAsReturned,
-    autoMarkBySystem
+    updateBookings
 }

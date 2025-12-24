@@ -15,7 +15,7 @@ const initDB = async() => {
         phone VARCHAR(20) NOT NULL,
         role VARCHAR(10) NOT NULL,
         CONSTRAINT Chk_PassLength CHECK (LENGTH(password) >= 6),
-        CONSTRAINT Chk_UserRole CHECK (role IN ('admin', 'user'))
+        CONSTRAINT Chk_UserRole CHECK (role IN ('admin', 'customer'))
         )`),
 
     await pool.query(`

@@ -3,7 +3,7 @@ import  jwt  from "jsonwebtoken";
 import config from "../config/config";
 import { UserPayload } from "./roleAuth";
 
-const auth = (role?: "admin" | "user") => { 
+const auth = (role?: "admin" | "customer") => { 
     return (req: Request, res: Response, next: NextFunction) => {
 
         const authHeader = req.headers.authorization;

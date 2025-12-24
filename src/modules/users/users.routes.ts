@@ -8,7 +8,7 @@ const router = express.Router()
 
 
 router.get("/", adminAuth("admin"), usersControllers.getAllUser)
-router.put("/:id", auth(), isOwnerOrAdmin, usersControllers.updateUserData)
-router.delete("/:id", adminAuth("admin"), usersControllers.deleteUser)
+router.put("/:userId", auth(), isOwnerOrAdmin, usersControllers.updateUserData)
+router.delete("/:userId", adminAuth("admin"), usersControllers.deleteUser)
 
 export const usersRoutes = router;
