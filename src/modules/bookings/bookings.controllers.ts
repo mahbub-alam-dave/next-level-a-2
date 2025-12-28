@@ -5,8 +5,9 @@ import { bookingsService } from "./bookings.services";
 
 const bookVehicles = async(req: Request, res: Response) => {
     
-    const {vehicle_id, rent_start_date, rent_end_date} = req.body;
-    const customer_id = (req as any).user.id;
+    const {customer_id, vehicle_id, rent_start_date, rent_end_date} = req.body;
+    console.log(req.body)
+    // const customer_id = (req as any).user.id;
 
     const vehicleRes = await pool.query(`SELECT * FROM Vehicles WHERE id=$1`,[vehicle_id])
 
@@ -109,9 +110,29 @@ export const updateBookings = async (req: Request, res: Response) => {
 }
 
 
+const autoMarkBySystem = async (req:Request, res: Response) => {
+        try {
+        const total = await bookingsService.autoReturnExpiredBookings();
+
+        return res.status(200).json({
+            success: true,
+            message: `Auto-return completed for ${total} bookings.`
+        });
+
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+
+}
+
+
 
 export const bookingsController = {
     bookVehicles,
     getBookings,
-    updateBookings
+    updateBookings,
+    autoMarkBySystem
 }

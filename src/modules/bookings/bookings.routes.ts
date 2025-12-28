@@ -8,5 +8,6 @@ const router = express.Router()
 router.post("/", auth(), bookingsController.bookVehicles)
 router.get("/", auth(), bookingsController.getBookings)
 router.put('/:bookingId', auth(), bookingsController.updateBookings)
+router.get('/auto-return', bookingsController.autoMarkBySystem)
 
 export const bookingsRoutes = router;

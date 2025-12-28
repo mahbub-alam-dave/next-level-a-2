@@ -72,7 +72,7 @@ const queryStr = role === "admin"
 
   const data = booking.rows[0];
 
-  if (role === "customer" && status === "cancel") {
+  if (role === "customer" && status === "cancelled") {
     const today = dayjs().format("YYYY-MM-DD");
 
     if (dayjs(today).isAfter(dayjs(data.rent_start_date))) {
@@ -91,7 +91,7 @@ const queryStr = role === "admin"
     }
   }
 
-  else if (role === "admin" && status === "return") {
+  else if (role === "admin" && status === "returned") {
     const returnedBooking = await pool.query(
       `
             UPDATE Bookings SET status='returned' WHERE id=$1 RETURNING *`,
@@ -113,10 +113,36 @@ const queryStr = role === "admin"
   throw new Error("Invalid role action or status update request");
 };
 
+const autoReturnExpiredBookings = async () => {
+  const today = dayjs().format("YYYY-MM-DD");
+
+  // Find all bookings that ended before today and still active
+  const expiredBookings = await pool.query(
+    `SELECT * FROM Bookings 
+             WHERE rent_end_date < $1 
+             AND status='active'`,
+    [today]
+  );
+
+  for (const booking of expiredBookings.rows) {
+    await pool.query(`UPDATE Bookings SET status='returned' WHERE id=$1`, [
+      booking.id,
+    ]);
+
+    await pool.query(
+      `UPDATE Vehicles SET availability_status='available' WHERE id=$1`,
+      [booking.vehicle_id]
+    );
+  }
+
+  return expiredBookings.rows.length;
+};
+
 
 
 export const bookingsService = {
   bookVehicle,
   getBookings,
-  updateBookings
+  updateBookings,
+  autoReturnExpiredBookings
 };
